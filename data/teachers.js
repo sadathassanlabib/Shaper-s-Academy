@@ -55,8 +55,8 @@ export const teachers = [
   },
 
   {
-    id: "arshad-saiker-math",
-    name: "Arshad Saiker",
+    id: "arshad-saikder-math",
+    name: "Arshad Saikder",
     subject: "Higher Mathematics",
     qualification: "BSE, MSE, Mathematics, Dhaka University",
     image: "",
