@@ -4,14 +4,44 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { teachers } from "@/data/teachers";
 
-const allSubjects = ["All", ...new Set(teachers.map((t) => t.subject))];
+// ✅ Merge teachers by name — combine subjects into an array
+function mergeTeachersByName(list) {
+  const map = new Map();
+
+  list.forEach((teacher) => {
+    if (map.has(teacher.name)) {
+      const existing = map.get(teacher.name);
+      // Add subject if not already present
+      if (!existing.subjects.includes(teacher.subject)) {
+        existing.subjects.push(teacher.subject);
+      }
+    } else {
+      map.set(teacher.name, {
+        ...teacher,
+        subjects: [teacher.subject],
+      });
+    }
+  });
+
+  return Array.from(map.values());
+}
+
+const mergedTeachers = mergeTeachersByName(teachers);
+
+// All unique subjects (from merged list)
+const allSubjects = [
+  "All",
+  ...new Set(mergedTeachers.flatMap((t) => t.subjects)),
+];
 
 export default function TeachersPage() {
   const [activeSubject, setActiveSubject] = useState("All");
 
   const filtered = useMemo(() => {
-    if (activeSubject === "All") return teachers;
-    return teachers.filter((t) => t.subject === activeSubject);
+    if (activeSubject === "All") return mergedTeachers;
+    return mergedTeachers.filter((t) =>
+      t.subjects.includes(activeSubject)
+    );
   }, [activeSubject]);
 
   return (
@@ -38,10 +68,10 @@ export default function TeachersPage() {
               Every class is led by teachers who make concepts click.
             </p>
 
-            {/* Quick stats — inline pills */}
+            {/* ✅ Stats — merged teacher count */}
             <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-[11px] font-bold">
               <span className="rounded-full bg-white px-3 py-1.5 text-slate-700 ring-1 ring-slate-200">
-                {teachers.length}+ Teachers
+                {mergedTeachers.length}+ Teachers
               </span>
               <span className="rounded-full bg-white px-3 py-1.5 text-slate-700 ring-1 ring-slate-200">
                 {allSubjects.length - 1} Subjects
@@ -79,13 +109,13 @@ export default function TeachersPage() {
         </div>
       </div>
 
-      {/* ═══════════ TEACHERS GRID — 2 cols on mobile ═══════════ */}
+      {/* ═══════════ TEACHERS GRID ═══════════ */}
       <section className="px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         <div className="mx-auto max-w-7xl">
           {filtered.length > 0 ? (
             <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 lg:gap-5">
               {filtered.map((teacher) => (
-                <TeacherCard key={teacher.id} teacher={teacher} />
+                <TeacherCard key={teacher.name} teacher={teacher} />
               ))}
             </div>
           ) : (
@@ -159,7 +189,7 @@ export default function TeachersPage() {
   );
 }
 
-/* ─────────────── Mobile-first Teacher Card ─────────────── */
+/* ─────────────── Teacher Card (multiple subjects) ─────────────── */
 function TeacherCard({ teacher }) {
   const initials = teacher.name
     .split(" ")
@@ -199,9 +229,17 @@ function TeacherCard({ teacher }) {
           {teacher.name}
         </h3>
 
-        <span className="mt-2 inline-flex max-w-full truncate rounded-full bg-blue-50 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-blue-700 sm:px-2.5 sm:py-1 sm:text-[10px]">
-          {teacher.subject}
-        </span>
+        {/* ✅ All subjects shown as pills */}
+        <div className="mt-2 flex flex-wrap justify-center gap-1">
+          {teacher.subjects.map((subject) => (
+            <span
+              key={subject}
+              className="inline-flex rounded-full bg-blue-50 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-blue-700 sm:px-2.5 sm:py-1 sm:text-[10px]"
+            >
+              {subject}
+            </span>
+          ))}
+        </div>
 
         {teacher.qualification && (
           <p className="mt-2 line-clamp-2 text-[10px] leading-4 text-slate-500 sm:text-[11px] sm:leading-5">
