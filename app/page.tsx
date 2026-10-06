@@ -30,12 +30,10 @@ export default function HomePage() {
     <>
       {/* ═══════════ HERO ═══════════ */}
       <section className="relative overflow-hidden bg-gradient-to-b from-white via-slate-50 to-white">
-        {/* Soft decorative circles */}
         <div className="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-sky-100/60 blur-3xl" />
         <div className="pointer-events-none absolute -right-32 top-32 h-96 w-96 rounded-full bg-blue-100/60 blur-3xl" />
 
         <div className="relative mx-auto grid min-h-[640px] max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-12 lg:gap-16 lg:px-8 lg:py-24">
-          {/* Left — text */}
           <div className="lg:col-span-7">
             <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-blue-700">
               <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
@@ -56,7 +54,6 @@ export default function HomePage() {
               consistency, and confidence grow together — class after class.
             </p>
 
-            {/* Primary CTAs */}
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/programs"
@@ -74,7 +71,6 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* Trust row */}
             <div className="mt-10 flex flex-wrap items-center gap-6 border-t border-slate-100 pt-6">
               <div>
                 <p className="text-2xl font-extrabold text-slate-900">
@@ -105,10 +101,8 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Right — feature card */}
           <div className="relative lg:col-span-5">
             <div className="relative rounded-[2rem] border border-slate-100 bg-white p-6 shadow-xl shadow-slate-200/50 sm:p-8">
-              {/* Badge */}
               <div className="flex items-center justify-between">
                 <span className="inline-flex rounded-full bg-blue-50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-blue-700">
                   Why families choose us
@@ -116,7 +110,6 @@ export default function HomePage() {
                 <span className="text-2xl">🎓</span>
               </div>
 
-              {/* Feature list */}
               <div className="mt-6 space-y-5">
                 <HeroFeature
                   icon="🎯"
@@ -135,7 +128,6 @@ export default function HomePage() {
                 />
               </div>
 
-              {/* Bottom CTA */}
               <div className="mt-7 rounded-2xl bg-gradient-to-br from-sky-50 to-blue-50 p-4">
                 <p className="text-xs font-semibold text-slate-700">
                   ⭐ Trusted by students and parents
@@ -147,7 +139,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Floating card behind */}
             <div className="absolute -bottom-4 -right-4 -z-10 h-full w-full rounded-[2rem] bg-gradient-to-br from-sky-100 to-blue-100" />
           </div>
         </div>
@@ -199,7 +190,6 @@ export default function HomePage() {
                 key={v.num}
                 className="group relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-7 transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl"
               >
-                {/* Top accent line */}
                 <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-sky-400 to-blue-600 opacity-0 transition group-hover:opacity-100" />
 
                 <div className="flex items-center justify-between">
@@ -339,7 +329,6 @@ export default function HomePage() {
                   className="group flex flex-col items-center text-center"
                 >
                   <div className="relative">
-                    {/* Outer gradient ring */}
                     <div className="rounded-full bg-gradient-to-br from-sky-400 to-blue-600 p-[2px] transition duration-300 group-hover:scale-105">
                       <div className="rounded-full bg-slate-50 p-1">
                         {teacher.image ? (
@@ -356,7 +345,6 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    {/* Small dot */}
                     <span className="absolute bottom-1 right-1 h-4 w-4 rounded-full bg-blue-500 ring-2 ring-slate-50" />
                   </div>
 
@@ -497,7 +485,15 @@ export default function HomePage() {
   );
 }
 
-function HeroFeature({ icon, title, text }) {
+function HeroFeature({
+  icon,
+  title,
+  text,
+}: {
+  icon: string;
+  title: string;
+  text: string;
+}) {
   return (
     <div className="flex items-start gap-4">
       <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-sky-50 to-blue-100 text-xl">
