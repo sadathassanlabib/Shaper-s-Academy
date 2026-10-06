@@ -37,7 +37,7 @@ export default function HomePage() {
           <div className="lg:col-span-7">
             <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-blue-700">
               <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
-              Shaper's Academy · Since 2024
+              Shaper's Academy · Since 2026
             </span>
 
             <h1 className="mt-6 text-4xl font-extrabold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-[64px]">
