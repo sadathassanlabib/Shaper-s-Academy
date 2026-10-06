@@ -3,24 +3,34 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { programs } from "@/data/programs";
+import { teachers } from "@/data/teachers";
+
+// ✅ Subjects that have at least one teacher
+const availableSubjects = new Set(teachers.map((t) => t.subject));
 
 export default function ProgramsPage() {
   const [activeClass, setActiveClass] = useState("All");
 
-  // Only HSC for now
   const visibleClasses = ["All", "HSC"];
 
   const filtered = useMemo(() => {
     const hscOnly = programs.filter((p) => p.title === "HSC");
 
-    if (activeClass === "All") return hscOnly;
-    return hscOnly.filter((p) => p.title === activeClass);
+    const withAvailableSubjects = hscOnly
+      .map((program) => ({
+        ...program,
+        subjects: program.subjects.filter((s) => availableSubjects.has(s)),
+      }))
+      .filter((program) => program.subjects.length > 0);
+
+    if (activeClass === "All") return withAvailableSubjects;
+    return withAvailableSubjects.filter((p) => p.title === activeClass);
   }, [activeClass]);
 
-  const totalSubjects = filtered.reduce(
-    (sum, p) => sum + p.subjects.length,
-    0
-  );
+  // ✅ UNIQUE subjects across all filtered programs
+  const totalSubjects = new Set(
+    filtered.flatMap((p) => p.subjects)
+  ).size;
 
   return (
     <>
@@ -51,6 +61,7 @@ export default function ProgramsPage() {
               <span className="rounded-full bg-white px-3 py-1.5 text-slate-700 ring-1 ring-slate-200">
                 {filtered.length} Programs
               </span>
+              {/* ✅ Unique subject count */}
               <span className="rounded-full bg-white px-3 py-1.5 text-slate-700 ring-1 ring-slate-200">
                 {totalSubjects} Subjects
               </span>
@@ -94,10 +105,8 @@ export default function ProgramsPage() {
                   key={program.id}
                   className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition active:border-blue-200 sm:rounded-3xl sm:p-6 sm:hover:-translate-y-1 sm:hover:border-blue-200 sm:hover:shadow-xl"
                 >
-                  {/* Top accent bar */}
                   <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-sky-400 to-blue-600 opacity-0 transition group-hover:opacity-100 group-active:opacity-100" />
 
-                  {/* Title + Group chip */}
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 sm:text-[10px]">
@@ -113,15 +122,12 @@ export default function ProgramsPage() {
                     </span>
                   </div>
 
-                  {/* Description */}
                   <p className="mt-2 line-clamp-2 text-[11px] leading-5 text-slate-500 sm:mt-3 sm:text-sm sm:leading-6">
                     {program.description}
                   </p>
 
-                  {/* Divider */}
                   <div className="my-3 h-px w-full bg-gradient-to-r from-transparent via-slate-100 to-transparent sm:my-4" />
 
-                  {/* ✅ ALL Subjects — no filter */}
                   <div>
                     <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 sm:text-[10px]">
                       Subjects
@@ -140,7 +146,6 @@ export default function ProgramsPage() {
                     </div>
                   </div>
 
-                  {/* Footer */}
                   <div className="mt-auto pt-4 sm:pt-5">
                     <div className="flex items-center justify-between border-t border-slate-100 pt-3">
                       <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400 sm:text-[10px]">
